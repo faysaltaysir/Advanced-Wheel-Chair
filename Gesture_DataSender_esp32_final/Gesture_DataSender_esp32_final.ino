@@ -62,10 +62,10 @@ void loop() {
     position = 0;
   }
   else if (x<1700){
-    position = 3;
+    position = 4;
   }
   else if (x>2000){
-    position = 4;
+    position = 3;
   }
   else if (y<1700){
     position = 2;
