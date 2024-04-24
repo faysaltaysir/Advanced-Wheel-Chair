@@ -1,11 +1,15 @@
 #include <WiFi.h>         //Including wifi.h library it will take care of all wifi related task
 #include <HTTPClient.h>   //Including HTTPClient.h library to use all api
 #include <HardwareSerial.h> 
-const char* ssid = "Infinix HOT 30";             //Add your WiFi ssid
-const char* password =  "shansaya";    //Add your WiFi password
+const char* ssid = "realme C25";             //Add your WiFi ssid
+const char* password =  "11111111";    //Add your WiFi password
+//fatin vai
+String apiKey = "3893691";              //Add your Token number that bot has sent you on WhatsApp messenger
+String phone_number = "8801876313623"; //Add your WhatsApp app registered phone number (same number that bot send you in url)
 
-String apiKey = "5046106";              //Add your Token number that bot has sent you on WhatsApp messenger
-String phone_number = "8801878904575"; //Add your WhatsApp app registered phone number (same number that bot send you in url)
+//shan
+//String apiKey = "5046106";              //Add your Token number that bot has sent you on WhatsApp messenger
+//String phone_number = "8801878904575"; //Add your WhatsApp app registered phone number (same number that bot send you in url)
 
 String url;                            //url String will be used to store the final generated URL
 String message = "";
@@ -53,26 +57,51 @@ void setup() {
 
 void loop(){
   char print_buf[300];
+  char print_buf2[300];
   gpsLocation(); 
-  sprintf(print_buf,"I am in a Denger!\nlat: %lf,long: %lf",gps.location.lat(),gps.location.lng()); 
+  sprintf(print_buf,"I am in a Denger!\nhttps://www.google.com/maps?q=%lf,%lf",gps.location.lat(),gps.location.lng());
+  sprintf(print_buf2,"I am in a Denger!\nhttps://www.google.com/maps?q=%s,%s","22.4619","91.9711"); 
+  Serial.println(print_buf);
   int but = button();
   Serial.println(but);
+  digitalWrite(led,0);
   if(but==0  && ready =='R'){
-    Serial.println(button());
-    digitalWrite(2,1);
+    Serial.println(but);
+    digitalWrite(led,1);
     while(check!=1 ){
-      message_to_whatsapp(print_buf);  // you send your own message just change "hello from TechTOnions" to your message.
+      digitalWrite(led,0);
+      message_to_whatsapp(print_buf);  
       Serial.print("inside");
+      digitalWrite(led,1);
     }
     digitalWrite(led,1);
-    delay(1000);
+    delay(4000);
     digitalWrite(led,0);
     digitalWrite(2,0);
     check = 0;
-    delay(200);
+    but=1;
+    //delay(200);
+  }
+  else if(but==0  && ready =='N'){
+    Serial.println(but);
+    digitalWrite(led,1);
+    while(check!=1 ){
+      digitalWrite(led,0);
+      message_to_whatsapp(print_buf2);  
+      Serial.print("inside");
+      digitalWrite(led,1);
+    }
+    digitalWrite(led,1);
+    delay(4000);
+    digitalWrite(led,0);
+    digitalWrite(2,0);
+    check = 0;
+    but=1;
+    //delay(200);
   }
   else{
     Serial.println("No");
+    digitalWrite(led,0);
   }    
 }
 
@@ -82,10 +111,6 @@ void gpsLocation() {
     if (gps.encode(gpsSerial.read())) {
       // If new data is parsed successfully
       if (gps.location.isValid()) {
-        digitalWrite(led,1);
-        delay(1000);
-        digitalWrite(led,0);
-        digitalWrite(2,1);
         // If valid location data is available
 //        Serial.print("Latitude: ");
 //        Serial.println(gps.location.lat(), 6); // Print latitude
@@ -181,28 +206,5 @@ void updateSerial()
 int button() {
   int reading = digitalRead(buttonPin);  // Read the state of the button
 
-  // Check if the button state has changed
-  if (reading != lastButtonState) {
-    // Update the debounce time
-    lastDebounceTime = millis();
-  }
-
-  // Check if the button state has remained stable for the debounce delay
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    // Check if the button state has changed
-    if (reading != buttonState) {
-      buttonState = reading;  // Update the button state
-
-      // Print the button state
-      Serial.print("Button state: ");
-      Serial.println(buttonState);
-
-      // Add your code here to perform actions based on button press
-
-    }
-  }
-
-  // Update the last button state
-  lastButtonState = reading;
-  return buttonState;
+  return reading;
 }
