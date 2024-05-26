@@ -24,15 +24,15 @@ int check;
 int R_Speed = 150;
 int L_Speed = 185;
 //declare channel for pwm Output
-#define R 0
-#define L 1
+#define L 0
+#define R 1
 int enA = 5;
 int enB = 18;
 
 //motor controlling pin
-int IN1 = 23;
-int IN2 = 22;
-int IN3 = 21;
+int IN1 = 23;  //left  //right motor
+int IN2 = 22;   
+int IN3 = 21;  //right  //left motor
 int IN4 = 19;
 
 uint8_t recv_data[6];
@@ -82,8 +82,8 @@ void setup() {
   // put your setup code here, to run once:
     Serial.begin(115200);
     Serial2.begin(9600,SERIAL_8N1,RXp2,TXp2);
-    pinMode(enA, OUTPUT);
-    pinMode(enB, OUTPUT);
+    pinMode(enA, OUTPUT);  //left
+    pinMode(enB, OUTPUT);  //right
     pinMode(trigN, OUTPUT);
     pinMode(echoN, INPUT);
     pinMode(trigS, OUTPUT);
@@ -91,9 +91,9 @@ void setup() {
     pinMode(2, OUTPUT);
     // Setup PWM channels
     ledcSetup(R, 20000, 8);  // Channel 0 for Motor A, 5 kHz frequency, 8-bit resolution
-    ledcAttachPin(enA, R);
+    ledcAttachPin(enA, R);   //left
     ledcSetup(L, 20000, 8);  // Channel 0 for Motor A, 5 kHz frequency, 8-bit resolution
-    ledcAttachPin(enB, L);
+    ledcAttachPin(enB, L);   //right
   
     pinMode(IN1, OUTPUT);
     pinMode(IN2, OUTPUT);
@@ -289,7 +289,7 @@ void core1_task(void *pvParameters) {
         Serial.println("Left");
         //voiceLeft();
         Left();
-        delay(600);
+        delay(900);
 //        if(str == 'm') 
 //            val[0]='M';
 //        else
@@ -299,7 +299,7 @@ void core1_task(void *pvParameters) {
         Serial.println("Right");
         //voiceRight();
         Right();
-        delay(600);
+        delay(900);
 //        if(str == 'm') 
 //            val[0]='M';
 //        else
@@ -391,8 +391,8 @@ void voiceForward() {
   digitalWrite(IN4, LOW);
 }
 void voiceLeft(){
-  ledcWrite(R, 0);
-  ledcWrite(L, L_Speed);
+  ledcWrite(R, R_Speed);
+  ledcWrite(L, 0);
 
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
@@ -400,8 +400,8 @@ void voiceLeft(){
   digitalWrite(IN4, LOW);
 }
 void voiceRight(){
-  ledcWrite(R, R_Speed);
-  ledcWrite(L, 0);
+  ledcWrite(R, 0);
+  ledcWrite(L, L_Speed);
 
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
@@ -436,15 +436,15 @@ void Right() {
   ledcWrite(R, 180);
   ledcWrite(L, 180);
 
-  digitalWrite(IN1, 1);
-  digitalWrite(IN2, 0);
-  digitalWrite(IN3, LOW);
+  digitalWrite(IN1, 1);  //left
+  digitalWrite(IN2, 0);  
+  digitalWrite(IN3, LOW); //right
   digitalWrite(IN4, HIGH);
 }
 
 void  Backward() {
-  ledcWrite(R, L_Speed);
-  ledcWrite(L, R_Speed);
+  ledcWrite(R, R_Speed+20);
+  ledcWrite(L, L_Speed);
 
   digitalWrite(IN1, 0);
   digitalWrite(IN2, 1);
@@ -456,8 +456,8 @@ void Forward() {
   ledcWrite(R, R_Speed);
   ledcWrite(L, L_Speed);
 
-  digitalWrite(IN1, HIGH);
+  digitalWrite(IN1, HIGH);  //right motor
   digitalWrite(IN2, LOW);
-  digitalWrite(IN3, HIGH);
+  digitalWrite(IN3, HIGH);  //left motor
   digitalWrite(IN4, LOW);
 }
