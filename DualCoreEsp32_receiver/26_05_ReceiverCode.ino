@@ -21,8 +21,8 @@ int check;
 
 #define trigS 27
 #define echoS 26
-int R_Speed = 165;
-int L_Speed = 200;
+int R_Speed = 150;
+int L_Speed = 185;
 //declare channel for pwm Output
 #define R 0
 #define L 1
@@ -290,9 +290,9 @@ void core1_task(void *pvParameters) {
         //voiceLeft();
         Left();
         delay(600);
-        if(str == 'm') 
-            val[0]='M';
-        else
+//        if(str == 'm') 
+//            val[0]='M';
+//        else
             val[0]='S';
     }
     if(val[0]=='R'){
@@ -300,9 +300,9 @@ void core1_task(void *pvParameters) {
         //voiceRight();
         Right();
         delay(600);
-        if(str == 'm') 
-            val[0]='M';
-        else
+//        if(str == 'm') 
+//            val[0]='M';
+//        else
             val[0]='S';
     }
     if(val[0]=='S'){
@@ -423,8 +423,8 @@ void stop() {
 
 
 void Left() {
-  ledcWrite(R, 200);
-  ledcWrite(L, 200);
+  ledcWrite(R, 180);
+  ledcWrite(L, 180);
 
   digitalWrite(IN1, 0);
   digitalWrite(IN2, 1);
@@ -433,8 +433,8 @@ void Left() {
   }
 
 void Right() {
-  ledcWrite(R, 200);
-  ledcWrite(L, 200);
+  ledcWrite(R, 180);
+  ledcWrite(L, 180);
 
   digitalWrite(IN1, 1);
   digitalWrite(IN2, 0);
@@ -443,8 +443,8 @@ void Right() {
 }
 
 void  Backward() {
-  ledcWrite(R, R_Speed);
-  ledcWrite(L, L_Speed);
+  ledcWrite(R, L_Speed);
+  ledcWrite(L, R_Speed);
 
   digitalWrite(IN1, 0);
   digitalWrite(IN2, 1);
